@@ -1,7 +1,7 @@
 package Routing
 
 import (
-	"github.com/dpitkevics/daps/Middleware"
+	"github.com/dapsframework/daps/Middleware"
 )
 
 type Controller struct {
