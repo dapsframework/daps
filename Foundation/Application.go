@@ -3,7 +3,6 @@ package Foundation
 import (
 	"github.com/dapsframework/daps/Component"
 	"github.com/dapsframework/daps/Foundation/Loader"
-	_ "path"
 	"path"
 )
 
