@@ -3,6 +3,8 @@ package Foundation
 import (
 	"github.com/dapsframework/daps/Component"
 	"github.com/dapsframework/daps/Foundation/Loader"
+	_ "path"
+	"path"
 )
 
 type Application struct {
@@ -31,10 +33,12 @@ func (application *Application) GetComponents() []Component.ComponentInterface {
 }
 
 func (application *Application) LoadConfig() {
-	configLoader := new(Loader.ConfigLoader)
-	configLoader.Load(application.BasePath)
+	configLoader := new(Loader.AppConfigLoader)
 
+	Component.BootComponent(configLoader)
 	application.AddComponent(configLoader)
+
+	configLoader.Load(path.Join(application.BasePath, "Config", "app.yaml"))
 }
 
 func NewApplication(basePath string) *Application {

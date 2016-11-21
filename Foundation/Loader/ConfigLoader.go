@@ -1,49 +1,33 @@
 package Loader
 
 import (
-	"github.com/dapsframework/daps/Component"
-	"path"
 	"io/ioutil"
 	"gopkg.in/yaml.v2"
-	"fmt"
+	"github.com/dapsframework/daps/Component"
 )
 
-type AppConfig struct {
-	Version int8 `yaml:"version"`
-	Name string `yaml:"name"`
+type ConfigLoaderInterface interface {
+	Load(configPath string)
 }
 
 type ConfigLoader struct {
 	Component.Component
 
-	Version 	string
-	ConfigPath 	string
+	Config map[interface{}]interface{}
 }
 
 func (configLoader *ConfigLoader) InitComponent() {
-	configLoader.Version = "0.0.1"
-
-	configLoader.loadAppConfig()
+	configLoader.Config = make(map[interface{}]interface{})
 }
 
-func (configLoader *ConfigLoader) Load(basePath string) {
-	configLoader.ConfigPath = path.Join(basePath, "Config")
-}
-
-func (configLoader *ConfigLoader) loadAppConfig() {
-	configFile := path.Join(configLoader.ConfigPath, "app.yaml")
-
-	configLoader.loadConfigFile(configFile)
-}
-
-func (configLoader *ConfigLoader) loadConfigFile(configFile string) {
+func (configLoader *ConfigLoader) LoadConfigFile(configFile string) map[interface{}]interface{} {
 	yamlFile, err := ioutil.ReadFile(configFile)
 
 	if err != nil {
 		panic(err)
 	}
 
-	var config AppConfig
+	config := make(map[interface{}]interface{})
 
 	err = yaml.Unmarshal(yamlFile, &config)
 
@@ -51,7 +35,7 @@ func (configLoader *ConfigLoader) loadConfigFile(configFile string) {
 		panic(err)
 	}
 
-	fmt.Printf("Value: %#v\n", config.Name)
+	return config
 }
 
 
